@@ -327,6 +327,11 @@ applyrules(Client *c)
 	if (ch.res_name)
 		XFree(ch.res_name);
 	c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
+
+	if (r->isfloating) {
+		c->x = c->mon->mw / 32;
+		c->y = c->mon->mh / 16;
+    }
 }
 
 int
