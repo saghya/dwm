@@ -12,9 +12,9 @@ static const char col_gray3[]       = "#CDD6F4";
 static const char col_lavender[]    = "#B4BEFE";
 
 static const char *colors[][3]      = {
-    /*               fg         bg            border   */
-    [SchemeNorm] = { col_gray3, col_gray1,    col_gray2 },
-    [SchemeSel]  = { col_gray1, col_lavender, col_lavender },
+    /*               fg         bg         border   */
+    [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+    [SchemeSel]  = { col_gray3, col_gray1, col_lavender },
 };
 
 /* tagging */
@@ -74,7 +74,6 @@ static const char *bluetooth[]    = { "dmenu-bluetooth", "-m", monarg, NULL };
 static const char *passmenu[]     = { "passmenu", "-m", monarg, NULL };
 static const char *screenshot[]   = { "dmenu-screenshot", "-m", monarg, NULL };
 static const char *todo[]         = { "todo", "-m", monarg, NULL };
-static const char *spotify[]      = { TERMINAL, "-t", "Spotify", "-e", "spotify_player", NULL };
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -115,7 +114,6 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = passmenu } },
     { 0,                            XK_Print,  spawn,          {.v = screenshot } },
     { MODKEY|ShiftMask,             XK_t,      spawn,          {.v = todo } },
-    { MODKEY,                       XK_s,      spawn,          {.v = spotify } },
 };
 
 /* button definitions */
