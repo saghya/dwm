@@ -910,7 +910,6 @@ drawbar(Monitor *m)
 
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
-			//drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			if (TEXTW(m->sel->name) > w) /* title is bigger than the width of the title rectangle, don't center */
 				drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
