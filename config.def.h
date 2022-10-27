@@ -14,7 +14,7 @@ static const char col_lavender[]    = "#B4BEFE";
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-    [SchemeSel]  = { col_gray3, col_gray1, col_lavender },
+    [SchemeSel]  = { col_gray3, col_gray2, col_lavender },
 };
 
 /* tagging */
@@ -86,6 +86,9 @@ static const Key keys[] = {
     { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
     { MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
     { MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+    { MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.25} },
+    { MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.25} },
+    { MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
     { MODKEY,                       XK_space,  zoom,           {0} },
     { MODKEY,                       XK_Tab,    view,           {0} },
     { MODKEY,                       XK_q,      killclient,     {0} },
