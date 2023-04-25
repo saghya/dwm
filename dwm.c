@@ -1886,7 +1886,12 @@ sigstatusbar(const Arg *arg)
 void
 spawn(const Arg *arg)
 {
+<<<<<<< HEAD
 	monarg[0] = '0' + selmon->num;
+=======
+	if (arg->v == dmenucmd)
+		dmenumon[0] = '0' + selmon->num;
+>>>>>>> ba56fe9
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
