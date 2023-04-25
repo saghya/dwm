@@ -63,8 +63,8 @@ static const Layout layouts[] = {
 #define STATUSBAR "dwmblocks"
 
 /* commands */
-static char monarg[2] = "0"; /* set to ascii value of current monitor number by spawn() */
-static const char *dmenucmd[]     = { "dmenu_run", "-m", monarg, NULL };
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[]     = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *browser[]      = { "google-chrome-stable", NULL };
 static const char *file_manager[] = { TERMINAL, "-e", "ranger", NULL };
