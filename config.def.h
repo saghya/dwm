@@ -68,12 +68,12 @@ static const char *dmenucmd[]     = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *browser[]      = { "google-chrome-stable", NULL };
 static const char *file_manager[] = { TERMINAL, "-e", "ranger", NULL };
-static const char *powermenu[]    = { "powermenu", "-m", monarg, NULL };
-static const char *network[]      = { "networkmanager_dmenu", "-m", monarg, "-l", "20", NULL };
-static const char *bluetooth[]    = { "dmenu-bluetooth", "-m", monarg, NULL };
-static const char *passmenu[]     = { "passmenu", "-m", monarg, NULL };
-static const char *screenshot[]   = { "dmenu-screenshot", "-m", monarg, NULL };
-static const char *todo[]         = { "todo", "-m", monarg, NULL };
+static const char *powermenu[]    = { "powermenu", "-m", dmenumon, NULL };
+static const char *network[]      = { "networkmanager_dmenu", "-m", dmenumon, "-l", "20", NULL };
+static const char *bluetooth[]    = { "dmenu-bluetooth", "-m", dmenumon, NULL };
+static const char *passmenu[]     = { "passmenu", "-m", dmenumon, NULL };
+static const char *screenshot[]   = { "dmenu-screenshot", "-m", dmenumon, NULL };
+static const char *todo[]         = { "todo", "-m", dmenumon, NULL };
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
