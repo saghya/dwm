@@ -1,14 +1,15 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrains Mono:size=12" };
-static const char col_gray1[]       = "#1E1E2E";
+static const char col_gray1[]       = "#0E0E1E";
 static const char col_gray2[]       = "#45475A";
-static const char col_gray3[]       = "#CDD6F4";
+static const char col_gray3[]       = "#EDF6FF";
 static const char col_lavender[]    = "#B4BEFE";
 
 static const char *colors[][3]      = {
@@ -75,6 +76,7 @@ static const char *passmenu[]     = { "passmenu", "-m", dmenumon, NULL };
 static const char *screenshot[]   = { "dmenu-screenshot", "-m", dmenumon, NULL };
 static const char *todo[]         = { "todo", "-m", dmenumon, NULL };
 
+#include "movestack.c"
 static const Key keys[] = {
     /* modifier                     key        function        argument */
     { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
