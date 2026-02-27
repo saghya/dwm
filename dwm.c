@@ -522,7 +522,7 @@ cleanup(void)
 	for (i = 0; i < CurLast; i++)
 		drw_cur_free(drw, cursor[i]);
 	for (i = 0; i < LENGTH(colors); i++)
-		free(scheme[i]);
+		drw_scm_free(drw, scheme[i], 3);
 	free(scheme);
 	XDestroyWindow(dpy, wmcheckwin);
 	drw_free(drw);
@@ -940,14 +940,15 @@ focusstack(const Arg *arg)
 Atom
 getatomprop(Client *c, Atom prop)
 {
-	int di;
-	unsigned long dl;
+	int format;
+	unsigned long nitems, dl;
 	unsigned char *p = NULL;
 	Atom da, atom = None;
 
 	if (XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
-		&da, &di, &dl, &dl, &p) == Success && p) {
-		atom = *(Atom *)p;
+		&da, &format, &nitems, &dl, &p) == Success && p) {
+		if (nitems > 0 && format == 32)
+			atom = *(long *)p;
 		XFree(p);
 	}
 	return atom;
@@ -997,10 +998,10 @@ getstate(Window w)
 	Atom real;
 
 	if (XGetWindowProperty(dpy, w, wmatom[WMState], 0L, 2L, False, wmatom[WMState],
-		&real, &format, &n, &extra, (unsigned char **)&p) != Success)
+        &real, &format, &n, &extra, &p) != Success)
 		return -1;
-	if (n != 0)
-		result = *p;
+	if (n != 0 && format == 32)
+		result = *(long *)p;
 	XFree(p);
 	return result;
 }
@@ -1173,8 +1174,15 @@ manage(Window w, XWindowAttributes *wa)
 	grabbuttons(c, 0);
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
-	if (c->isfloating)
+
+	if (c->isfloating) {
+
+	    /* center new floating clients */
+		c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
+		c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
 		XRaiseWindow(dpy, c->win);
+    }
+
 	attach(c);
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
@@ -1273,7 +1281,7 @@ movemouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+            if ((ev.xmotion.time - lasttime) <= (1000 / refreshrate))
 				continue;
 			lasttime = ev.xmotion.time;
 
@@ -1432,7 +1440,7 @@ resizemouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+            if ((ev.xmotion.time - lasttime) <= (1000 / refreshrate))
 				continue;
 			lasttime = ev.xmotion.time;
 
@@ -1470,17 +1478,36 @@ restack(Monitor *m)
 	drawbar(m);
 	if (!m->sel)
 		return;
-	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
-		XRaiseWindow(dpy, m->sel->win);
+	//if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
+	//	XRaiseWindow(dpy, m->sel->win);
+	//if (m->lt[m->sellt]->arrange) {
+	//	wc.stack_mode = Below;
+	//	wc.sibling = m->barwin;
+	//	for (c = m->stack; c; c = c->snext)
+	//		if (!c->isfloating && ISVISIBLE(c)) {
+	//			XConfigureWindow(dpy, c->win, CWSibling|CWStackMode, &wc);
+	//			wc.sibling = c->win;
+	//		}
+	//}
+	/* always put focused client above everything else (incl. floating) */
 	if (m->lt[m->sellt]->arrange) {
 		wc.stack_mode = Below;
 		wc.sibling = m->barwin;
+
+		/* focused directly under bar */
+		XConfigureWindow(dpy, m->sel->win, CWSibling|CWStackMode, &wc);
+		wc.sibling = m->sel->win;
+
+		/* everything else below focused (INCLUDING floating) */
 		for (c = m->stack; c; c = c->snext)
-			if (!c->isfloating && ISVISIBLE(c)) {
+			if (c != m->sel && ISVISIBLE(c)) {
 				XConfigureWindow(dpy, c->win, CWSibling|CWStackMode, &wc);
 				wc.sibling = c->win;
 			}
+	} else {
+		XRaiseWindow(dpy, m->sel->win);
 	}
+
 	XSync(dpy, False);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 }
@@ -1576,12 +1603,10 @@ sendevent(Client *c, Atom proto)
 void
 setfocus(Client *c)
 {
-	if (!c->neverfocus) {
-		XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
-		XChangeProperty(dpy, root, netatom[NetActiveWindow],
-			XA_WINDOW, 32, PropModeReplace,
-			(unsigned char *) &(c->win), 1);
-	}
+	if (!c->neverfocus)
+ 		XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
+	XChangeProperty(dpy, root, netatom[NetActiveWindow], XA_WINDOW, 32,
+		PropModeReplace, (unsigned char *)&c->win, 1);
 	sendevent(c, wmatom[WMTakeFocus]);
 }
 
