@@ -30,7 +30,7 @@ static const Rule rules[] = {
     { "Google-chrome", NULL,    NULL,      1 << 1,      0,           -1 },
     { "Zathura",       NULL,    NULL,      1 << 2,      0,           -1 },
     { NULL,            NULL,  "Spotify",   1 << 4,      0,            1 },
-    { "Pavucontrol",   NULL,    NULL,      0,           1,           -1 },
+    { "pavucontrol",   NULL,    NULL,      0,           1,           -1 },
     { "Lxappearance",  NULL,    NULL,      0,           1,           -1 },
     { "Pcmanfm",       NULL,    NULL,      0,           1,           -1 },
 };
