@@ -475,7 +475,11 @@ buttonpress(XEvent *e)
 					text = s + 1;
 					if (x >= ev->x)
 						break;
-					statussig = ch;
+					/* End clickable section on a matching signal raw byte */
+					if (statussig == ch)
+						statussig = 0;
+					else
+						statussig = ch;
 				}
 			}
 		} else
