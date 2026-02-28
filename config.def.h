@@ -76,6 +76,7 @@ static const char *bluetooth[]    = { "dmenu-bluetooth", "-m", dmenumon, NULL };
 static const char *passmenu[]     = { "passmenu", "-m", dmenumon, NULL };
 static const char *screenshot[]   = { "dmenu-screenshot", "-m", dmenumon, NULL };
 static const char *todo[]         = { "todo", "-m", dmenumon, NULL };
+static const char *vpn[]          = { "dmenu-vpn", "-m", dmenumon, NULL };
 
 #include "movestack.c"
 static const Key keys[] = {
@@ -122,6 +123,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = passmenu } },
     { 0,                            XK_Print,  spawn,          {.v = screenshot } },
     { MODKEY|ShiftMask,             XK_t,      spawn,          {.v = todo } },
+    { MODKEY|ShiftMask,             XK_v,      spawn,          {.v = vpn } },
 };
 
 /* button definitions */
