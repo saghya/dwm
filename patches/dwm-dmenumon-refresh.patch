@@ -1,0 +1,12 @@
+--- a/dwm.c
++++ b/dwm.c
+@@ -1815,8 +1815,7 @@
+ {
+ 	struct sigaction sa;
+ 
+-	if (arg->v == dmenucmd)
+-		dmenumon[0] = '0' + selmon->num;
++	dmenumon[0] = '0' + selmon->num;
+ 	if (fork() == 0) {
+ 		if (dpy)
+ 			close(ConnectionNumber(dpy));
