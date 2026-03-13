@@ -1,0 +1,43 @@
+diff --git a/dwm.c b/dwm.c
+--- a/dwm.c
++++ b/dwm.c
+@@ -1072,8 +1072,13 @@ manage(Window w, XWindowAttributes *wa)
+ 	grabbuttons(c, 0);
+ 	if (!c->isfloating)
+ 		c->isfloating = c->oldstate = trans != None || c->isfixed;
+-	if (c->isfloating)
++
++	if (c->isfloating) {
++		/* center new floating clients */
++		c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
++		c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
+ 		XRaiseWindow(dpy, c->win);
++	}
+ 	attach(c);
+ 	attachstack(c);
+ 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
+@@ -1364,16 +1369,21 @@ restack(Monitor *m)
+ 	drawbar(m);
+ 	if (!m->sel)
+ 		return;
+-	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
+-		XRaiseWindow(dpy, m->sel->win);
++	/* always keep the focused client above everything else */
+ 	if (m->lt[m->sellt]->arrange) {
+ 		wc.stack_mode = Below;
+ 		wc.sibling = m->barwin;
++
++		XConfigureWindow(dpy, m->sel->win, CWSibling|CWStackMode, &wc);
++		wc.sibling = m->sel->win;
++
+ 		for (c = m->stack; c; c = c->snext)
+-			if (!c->isfloating && ISVISIBLE(c)) {
++			if (c != m->sel && ISVISIBLE(c)) {
+ 				XConfigureWindow(dpy, c->win, CWSibling|CWStackMode, &wc);
+ 				wc.sibling = c->win;
+ 			}
++	} else {
++		XRaiseWindow(dpy, m->sel->win);
+ 	}
+ 	XSync(dpy, False);
+ 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
