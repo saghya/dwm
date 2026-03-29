@@ -72,12 +72,12 @@ static const char *dmenucmd[]     = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *browser[]      = { "firefox", NULL };
 static const char *file_manager[] = { TERMINAL, "--class", "ranger", "-e", "ranger", NULL };
-static const char *powermenu[]    = { "powermenu", "-m", dmenumon, NULL };
+static const char *powermenu[]    = { "dmenu-powermenu", "-m", dmenumon, NULL };
 static const char *network[]      = { "networkmanager_dmenu", "-m", dmenumon, "-l", "20", NULL };
 static const char *bluetooth[]    = { "dmenu-bluetooth", "-m", dmenumon, NULL };
 static const char *passmenu[]     = { "passmenu", "-m", dmenumon, NULL };
 static const char *screenshot[]   = { "dmenu-screenshot", "-m", dmenumon, NULL };
-static const char *todo[]         = { "todo", "-m", dmenumon, NULL };
+static const char *todo[]         = { "dmenu-todo", "-m", dmenumon, NULL };
 static const char *vpn[]          = { "dmenu-vpn", "-m", dmenumon, NULL };
 static const char *xrandr[]       = { "dmenu-xrandr", "-m", dmenumon, NULL };
 
